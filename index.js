@@ -98,4 +98,8 @@ app.get('/news/:newspaperId', async (req, res) => {
     : res.json(`There were no climate change articles from ${newspaperId} today.`)
 })
 
+app.get('/ping', (req, res) => {
+  res.json('Health check concluded')
+})
+
 app.listen(PORT, () => console.log(`server running on PORT ${PORT}`))
