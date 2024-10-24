@@ -30,22 +30,21 @@ const newspapers = [
   }
 ]
 
-const articles = []
+const getArticles = async (newspaperId = null) => {
+  const filteredNewspapers = newspaperId
+    ? newspapers.filter((newspaper) => newspaper.name === newspaperId)
+    : newspapers
 
-newspapers.forEach(({
-  address,
-  base,
-  isAriaLabel,
-  name,
-  selector,
-}) => {
-  axios
-    .get(address)
-    .then(response => {
+  const articlePromises = filteredNewspapers.map(async (curr) => {
+    const { address, base, isAriaLabel, name, selector } = curr
+
+    // Fetch the articles
+    try {
+      const response = await axios.get(address)
       const html = response.data
       const $ = cheerio.load(html)
 
-      $.extract({
+      const extractedArticles = $.extract({
         links: [
           {
             selector: selector,
@@ -53,75 +52,50 @@ newspapers.forEach(({
               const title = isAriaLabel
                 ? $(el).attr("aria-label")
                 : $(el).text().trim()
-              const url = $(el).attr('href')
-              articles.push({
+              const url = $(el).attr("href")
+              return {
                 title,
                 url: `${base}${url}`,
-                source: name
-              })
+                source: name,
+              }
             },
           },
         ],
       })
-    })
-    .catch(error => {
+
+      return extractedArticles.links
+    } catch (error) {
       console.log("ERROR:", error.message)
-    })
-})
+      return []
+    }
+  })
+
+  const articleArrays = await Promise.all(articlePromises)
+  const data = articleArrays.flat()
+
+  return data
+}
 
 app.get('/', (req, res) => {
   res.json('Welcome to my Climate Change News API')
 })
 
-app.get('/news', (req, res) => {
+app.get('/news', async (req, res) => {
+  const articles = await getArticles()
   articles.length
     ? res.json(articles)
     : res.json('There were no climate change articles from any of the publications today.')
 })
 
-app.get('/news/:newspaperId', (req, res) => {
+app.get('/news/:newspaperId', async (req, res) => {
   const newspaperId = req.params.newspaperId
 
-  const {
-    address,
-    base,
-    isAriaLabel,
-    name,
-    selector
-  } = newspapers.filter(newspaper => newspaper.name === newspaperId)[0]
-  
-  axios.get(address)
-    .then(response => {
-      const html = response.data
-      const $ = cheerio.load(html)
+  // Use the modified getArticles function to get articles for the specific newspaper
+  const articles = await getArticles(newspaperId)
 
-      const theseArticles = []
-
-      $.extract({
-        links: [
-          {
-            selector,
-            value: (el) => {
-              const title = isAriaLabel
-                ? $(el).attr("aria-label")
-                : $(el).text().trim()
-              const url = $(el).attr('href')
-              theseArticles.push({
-                title,
-                url: `${base}${url}`,
-                source: name
-              })
-            },
-          },
-        ],
-      })
-      theseArticles.length
-        ? res.json(theseArticles)
-        : res.json(`There were no climate change articles from the ${name} today.`)
-    })
-    .catch(error => {
-      console.log("ERROR:", error.message)
-    })
+  articles.length
+    ? res.json(articles)
+    : res.json(`There were no climate change articles from ${newspaperId} today.`)
 })
 
 app.listen(PORT, () => console.log(`server running on PORT ${PORT}`))
