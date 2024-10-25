@@ -7,7 +7,10 @@ const PORT = process.env.PORT || 8000
 const app = express()
 
 async function scrapeStories(pageNumber = 1) {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+})
   const page = await browser.newPage()
   const url = `https://science.nasa.gov/climate-change/stories/?pageno=${pageNumber}&content_list=true`
 
