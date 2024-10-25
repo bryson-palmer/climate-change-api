@@ -37,13 +37,12 @@ async function scrapeStories(pageNumber = 1) {
         title: story.querySelector('a')?.getAttribute('title') || '',
       }))
     })
+    await browser.close()
+    return stories
   } catch (error) {
     console.error('Error fetching the page:', error)
     return []
   }
-
-  await browser.close()
-  return stories
 }
 
 app.get('/', (req, res) => {
