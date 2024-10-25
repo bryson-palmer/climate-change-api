@@ -14,6 +14,9 @@ async function scrapeStories(pageNumber = 1) {
   const page = await browser.newPage()
   const url = `https://science.nasa.gov/climate-change/stories/?pageno=${pageNumber}&content_list=true`
 
+  const content = await page.content()
+  console.log('content>>>', content)
+
   await page.goto(url, { waitUntil: 'networkidle2' })
 
   const stories = await page.evaluate(() => {
