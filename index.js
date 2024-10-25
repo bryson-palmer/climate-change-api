@@ -1,9 +1,8 @@
 import express from 'express'
 import puppeteer from 'puppeteer'
 
-const ENV = process.env.NODE_ENV || 'development'
+// const ENV = process.env.NODE_ENV || 'development'
 const PORT = process.env.PORT || 8000
-const BASE = ENV === 'development' ? `http://localhost:${PORT}` : 'https://climate-data.vercel.app'
 
 const app = express()
 
@@ -55,7 +54,7 @@ app.get('/api/climate-stories', async (req, res) => {
     nextPage: null,
     prevPage:
       pageNumber > 1
-        ? `${BASE}/api/climate-stories?page=${pageNumber - 1}`
+        ? `http://localhost:${PORT}/api/climate-stories?page=${pageNumber - 1}`
         : null,
     timestamp: new Date().toISOString(),
     scrapeDuration: null,
@@ -68,7 +67,7 @@ app.get('/api/climate-stories', async (req, res) => {
     response.data = stories
     response.nextPage =
       stories.length > 0
-        ? `${BASE}/api/climate-stories?page=${pageNumber + 1}`
+        ? `http://localhost:${PORT}/api/climate-stories?page=${pageNumber + 1}`
         : null
 
   } catch (error) {
