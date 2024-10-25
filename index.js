@@ -90,6 +90,17 @@ app.get('/api/climate-stories', async (req, res) => {
   res.status(200).json(response)
 })
 
+app.get('/test-fetch', async (req, res) => {
+  const url = 'https://science.nasa.gov/climate-change/stories/';
+  try {
+      const response = await fetch(url)
+      const body = await response.text()
+      res.send(body) // Return the raw HTML for inspection
+  } catch (error) {
+      res.status(500).send('Failed to fetch')
+  }
+})
+
 app.get('/ping', (req, res) => {
   res.json('Health check concluded')
 })
