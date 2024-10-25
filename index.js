@@ -14,29 +14,33 @@ async function scrapeStories(pageNumber = 1) {
   const page = await browser.newPage()
   const url = `https://science.nasa.gov/climate-change/stories/?pageno=${pageNumber}&content_list=true`
 
-  const content = await page.content()
-  console.log('content>>>', content)
+  try {
+    await page.goto(url, { waitUntil: 'networkidle2' })
 
-  await page.goto(url, { waitUntil: 'networkidle2' })
-
-  const stories = await page.evaluate(() => {
-    const storyElements = document.querySelectorAll(
-      '.hds-content-items-list > div'
-    )
-    return Array.from(storyElements).map((story) => ({
-      image: {
-        src: story.querySelector('img')?.src || '',
-        alt: story.querySelector('a')?.getAttribute('title') || '',
-      },
-      link: story.querySelector('a')?.href || '',
-      publishdate: story.querySelector('.margin-left-2')?.textContent.trim() || '',
-      readtime:
-        story.querySelector('.hds-content-item-readtime')?.textContent.trim() ||
-        '',
-      synopsis: story.querySelector('p')?.textContent.trim() || '',
-      title: story.querySelector('a')?.getAttribute('title') || '',
-    }))
-  })
+    const stories = await page.evaluate(() => {
+      const storyElements = document.querySelectorAll(
+        '.hds-content-items-list > div'
+      )
+      return Array.from(storyElements).map((story) => ({
+        image: {
+          src: story.querySelector('img')?.src || '',
+          alt: story.querySelector('a')?.getAttribute('title') || '',
+        },
+        link: story.querySelector('a')?.href || '',
+        publishdate:
+          story.querySelector('.margin-left-2')?.textContent.trim() || '',
+        readtime:
+          story
+            .querySelector('.hds-content-item-readtime')
+            ?.textContent.trim() || '',
+        synopsis: story.querySelector('p')?.textContent.trim() || '',
+        title: story.querySelector('a')?.getAttribute('title') || '',
+      }))
+    })
+  } catch (error) {
+    console.error('Error fetching the page:', error)
+    return []
+  }
 
   await browser.close()
   return stories
