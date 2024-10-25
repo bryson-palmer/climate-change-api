@@ -1,105 +1,91 @@
-import axios from 'axios'
 import express from 'express'
-import * as cheerio from 'cheerio'
+import puppeteer from 'puppeteer'
 
+const ENV = process.env.NODE_ENV || 'development'
 const PORT = process.env.PORT || 8000
+const BASE = ENV === 'development' ? `http://localhost:${PORT}` : 'https://climate-data.vercel.app'
 
 const app = express()
 
-const newspapers = [
-  {
-    name: 'thetimes',
-    base: 'https://www.thetimes.com',
-    address: 'https://www.thetimes.com/uk/environment/climate-change',
-    isAriaLabel: false,
-    selector: 'a:contains("climate")',
-  },
-  {
-    name: 'guardian',
-    base: 'https://www.theguardian.com',
-    address: 'https://www.theguardian.com/environment/climate-crisis',
-    isAriaLabel: true,
-    selector: 'a[aria-label*="climate"]',
-  },
-  {
-    name: 'telegraph',
-    base: 'https://www.telegraph.co.uk',
-    address: 'https://www.telegraph.co.uk/climate-change/',
-    isAriaLabel: false,
-    selector: 'a:contains("climate")',
-  }
-]
+async function scrapeStories(pageNumber = 1) {
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+  const url = `https://science.nasa.gov/climate-change/stories/?pageno=${pageNumber}&content_list=true`
 
-const getArticles = async (newspaperId = null) => {
-  const filteredNewspapers = newspaperId
-    ? newspapers.filter((newspaper) => newspaper.name === newspaperId)
-    : newspapers
+  await page.goto(url, { waitUntil: 'networkidle2' })
 
-  const articlePromises = filteredNewspapers.map(async (curr) => {
-    const { address, base, isAriaLabel, name, selector } = curr
-
-    // Fetch the articles
-    try {
-      const response = await axios.get(address)
-      const html = response.data
-      const $ = cheerio.load(html)
-
-      const extractedArticles = $.extract({
-        links: [
-          {
-            selector: selector,
-            value: (el) => {
-              const title = isAriaLabel
-                ? $(el).attr("aria-label")
-                : $(el).text().trim()
-              const url = $(el).attr("href")
-              return {
-                title,
-                url: `${base}${url}`,
-                source: name,
-              }
-            },
-          },
-        ],
-      })
-
-      return extractedArticles.links
-    } catch (error) {
-      console.log("ERROR:", error.message)
-      return []
-    }
+  const stories = await page.evaluate(() => {
+    const storyElements = document.querySelectorAll(
+      '.hds-content-items-list > div'
+    )
+    return Array.from(storyElements).map((story) => ({
+      image: {
+        src: story.querySelector('img')?.src || '',
+        alt: story.querySelector('a')?.getAttribute('title') || '',
+      },
+      link: story.querySelector('a')?.href || '',
+      publishdate: story.querySelector('.margin-left-2')?.textContent.trim() || '',
+      readtime:
+        story.querySelector('.hds-content-item-readtime')?.textContent.trim() ||
+        '',
+      synopsis: story.querySelector('p')?.textContent.trim() || '',
+      title: story.querySelector('a')?.getAttribute('title') || '',
+    }))
   })
 
-  const articleArrays = await Promise.all(articlePromises)
-  const data = articleArrays.flat()
-
-  return data
+  await browser.close()
+  return stories
 }
 
 app.get('/', (req, res) => {
   res.json('Welcome to my Climate Change News API')
 })
 
-app.get('/news', async (req, res) => {
-  const articles = await getArticles()
-  articles.length
-    ? res.json(articles)
-    : res.json('There were no climate change articles from any of the publications today.')
-})
+app.get('/api/climate-stories', async (req, res) => {
+  const { page } = req.query
+  const pageNumber = parseInt(page, 10) || 1
+  const pageSize = 10 // Assuming each page has 10 stories
 
-app.get('/news/:newspaperId', async (req, res) => {
-  const newspaperId = req.params.newspaperId
+  const startTime = Date.now() // Track start time for scrapeDuration calculation
 
-  // Use the modified getArticles function to get articles for the specific newspaper
-  const articles = await getArticles(newspaperId)
+  let response = {
+    data: [],
+    page: pageNumber,
+    pageSize: pageSize,
+    nextPage: null,
+    prevPage:
+      pageNumber > 1
+        ? `${BASE}/api/climate-stories?page=${pageNumber - 1}`
+        : null,
+    timestamp: new Date().toISOString(),
+    scrapeDuration: null,
+    error: null,
+  }
 
-  articles.length
-    ? res.json(articles)
-    : res.json(`There were no climate change articles from ${newspaperId} today.`)
+  try {
+    const stories = await scrapeStories(pageNumber)
+    // Set isFinished to true if no stories are found (indicating end of pages)
+    response.data = stories
+    response.nextPage =
+      stories.length > 0
+        ? `${BASE}/api/climate-stories?page=${pageNumber + 1}`
+        : null
+
+  } catch (error) {
+    response.error = 'Failed to scrape stories'
+    return res.status(500).json(response)
+  } finally {
+    const endTime = Date.now()
+    response.scrapeDuration = `${endTime - startTime}ms` // Calculate and set scrapeDuration
+  }
+
+  res.status(200).json(response)
 })
 
 app.get('/ping', (req, res) => {
   res.json('Health check concluded')
 })
 
-app.listen(PORT, () => console.log(`server running on PORT ${PORT}`))
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`)
+})
