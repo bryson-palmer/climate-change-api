@@ -70,7 +70,7 @@ app.get('/api/climate-stories', async (req, res) => {
     //     : null
 
   } catch (error) {
-    response.error = error
+    response.error = 'Error failed to scrape climate stories'
     return res.status(500).json(response)
   }
   
