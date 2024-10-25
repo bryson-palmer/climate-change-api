@@ -69,12 +69,12 @@ app.get('/api/climate-stories', async (req, res) => {
     //     ? `http://localhost:${PORT}/api/climate-stories?page=${pageNumber + 1}`
     //     : null
 
-    return res.status(200).json(response)
   } catch (error) {
     response.error = error
     return res.status(500).json(response)
   }
-
+  
+  res.status(200).json(response)
 })
 
 app.get('/test-fetch', async (req, res) => {
