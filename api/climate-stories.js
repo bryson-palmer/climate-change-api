@@ -1,81 +1,53 @@
-import { launch } from 'puppeteer-core';
-import {
-  args as _args,
-  executablePath as _executablePath,
-  headless as _headless
-} from 'chrome-aws-lambda'; // For Vercel compatibility
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 
-export default async (req, res) => {
-  const { page } = req.query;
-  const pageNumber = parseInt(page, 10) || 1;
-  const pageSize = 10;
-
-  const startTime = Date.now();
-  let response = {
-    data: [],
-    page: pageNumber,
-    pageSize: pageSize,
-    nextPage: null,
-    prevPage:
-      pageNumber > 1 ? `/api/climate-stories?page=${pageNumber - 1}` : null,
-    timestamp: new Date().toISOString(),
-    scrapeDuration: null,
-    error: null,
-  };
+export default async function climateStories(req, res) {
+  const { page } = req.query
+  const pageNumber = parseInt(page, 10) || 1
+  const pageSize = 10
 
   try {
-    const stories = await scrapeStories(pageNumber);
+    const { data } = await axios.get(`https://science.nasa.gov/climate-change/stories?pageno=${pageNumber}&content_list=true`)
+    const $ = cheerio.load(data)
 
-    response.data = stories;
-    response.nextPage =
-      stories.length > 0 ? `/api/climate-stories?page=${pageNumber + 1}` : null;
+    const stories = []
+    let publishdate
+
+    $('.hds-content-item').each((_, element) => {
+      const image = {
+        src: $(element).find('img').attr('src'),
+        alt: $(element).find('a').attr('title'),
+      }
+      const link = $(element).find('a').attr('href')
+      const readtime = $(element).find('.hds-content-item-readtime').text().trim()
+      const synopsis = $(element).find('p').text().trim()
+      const title = $(element).find('a').attr('title')
+      const published = $(element).find('span').text()
+
+      publishdate = published.split('Article')[1]
+
+      stories.push({
+        image,
+        link,
+        readtime,
+        synopsis,
+        title,
+        publishdate
+      })
+    })
+
+    // Return the result wrapped in an object
+    res.json({
+      data: stories,
+      error: null,
+      nextPage: stories.length > 0 ? `/api/climate-stories?page=${pageNumber + 1}` : null,
+      prevPage: pageNumber > 1 ? `/api/climate-stories?page=${pageNumber - 1}` : null,
+      page: pageNumber,
+      pageSize: pageSize,
+      timestamp: new Date().toISOString(),
+    })
   } catch (error) {
-    response.error = 'Failed to scrape stories';
-    return res.status(500).json(response);
-  } finally {
-    const endTime = Date.now();
-    response.scrapeDuration = `${endTime - startTime}ms`;
-  }
-
-  res.status(200).json(response);
-};
-
-async function scrapeStories(pageNumber) {
-  let browser;
-  try {
-    browser = await launch({
-      args: _args,
-      executablePath: await _executablePath,
-      headless: _headless,
-    });
-
-    const page = await browser.newPage();
-    const url = `https://science.nasa.gov/climate-change/stories/?pageno=${pageNumber}&content_list=true`;
-    await page.goto(url, { waitUntil: 'networkidle2' });
-
-    const stories = await page.evaluate(() => {
-      const storyElements = document.querySelectorAll(
-        '.hds-content-items-list > div'
-      );
-      return Array.from(storyElements).map((story) => ({
-        image: {
-          src: story.querySelector('img')?.src || '',
-          alt: story.querySelector('a')?.getAttribute('title') || '',
-        },
-        link: story.querySelector('a')?.href || '',
-        readtime:
-          story
-            .querySelector('.hds-content-item-readtime')
-            ?.textContent.trim() || '',
-        synopsis: story.querySelector('p')?.textContent.trim() || '',
-        title: story.querySelector('a')?.getAttribute('title') || '',
-        publishdate:
-          story.querySelector('.margin-left-2')?.textContent.trim() || '',
-      }));
-    });
-
-    return stories;
-  } finally {
-    if (browser) await browser.close()
+    console.error('Error in scraping function:', error)
+    res.status(500).json({ error: 'Failed to scrape stories' })
   }
 }
