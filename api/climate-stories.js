@@ -37,15 +37,17 @@ export default async function climateStories(req, res) {
     })
 
     // Return the result wrapped in an object
-    res.json({
-      data: stories,
-      error: null,
-      nextPage: stories.length > 0 ? `/api/climate-stories?page=${pageNumber + 1}` : null,
-      prevPage: pageNumber > 1 ? `/api/climate-stories?page=${pageNumber - 1}` : null,
-      page: pageNumber,
-      pageSize: pageSize,
-      timestamp: new Date().toISOString(),
-    })
+    res
+      .status(200)  
+      .json({
+        data: stories,
+        error: null,
+        nextPage: stories.length > 0 ? `/api/climate-stories?page=${pageNumber + 1}` : null,
+        prevPage: pageNumber > 1 ? `/api/climate-stories?page=${pageNumber - 1}` : null,
+        page: pageNumber,
+        pageSize: pageSize,
+        timestamp: new Date().toISOString(),
+      })
   } catch (error) {
     console.error('Error in scraping function:', error)
     res.status(500).json({ error: 'Failed to scrape stories' })
