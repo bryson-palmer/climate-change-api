@@ -7,10 +7,7 @@
     }
   },
   "rewrites": [
-        {"source": "/(.*)", "destination": "/api"}
-    ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/api" }
+    {"source": "/(.*)", "destination": "/api"}
   ],
   "regions": ["pdx1"]
 }
