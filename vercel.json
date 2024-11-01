@@ -1,15 +1,15 @@
 {
   "version": 2,
   "functions": {
-    "api/climate-stories.js": {
+    "api/*.js": {
       "memory": 1024,
-      "maxDuration": 30
-    },
-    "api/vital-signs.js": {
-      "memory": 1024,
-      "maxDuration": 30
+      "maxDuration": 10
     }
   },
+  "env": {
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
+  },
+  "installCommand": "npx playwright install-deps",
   "rewrites": [
     {"source": "/(.*)", "destination": "/api"}
   ],
