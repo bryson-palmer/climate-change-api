@@ -3,6 +3,7 @@ import * as api from './api/index.js'
 
 const app = express()
 
+app.get('/', () => "Welcome to the NASA climate change api. Scraped with care by me, for you.")
 app.get('/api/climate-stories', api.climateStories)
 app.get('/api/vital-signs', api.vitalSigns)
 
