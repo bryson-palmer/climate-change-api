@@ -1,9 +1,10 @@
 import express from 'express'
-import climateStories from './api/climate-stories.js'
+import * as api from './api/index.js'
 
 const app = express()
 
-app.get('/api/climate-stories', climateStories)
+app.get('/api/climate-stories', api.climateStories)
+app.get('/api/vital-signs', api.vitalSigns)
 
 // Start the server locally (for development)
 const PORT = process.env.PORT || 8000
