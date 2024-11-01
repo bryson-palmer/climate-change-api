@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 
-export default async function climateStories(req, res) {
+export async function climateStories(req, res) {
   const { page } = req.query
   const pageNumber = parseInt(page, 10) || 1
   const pageSize = 10
