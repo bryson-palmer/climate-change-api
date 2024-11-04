@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 
-export async function climateStories(req, res) {
+async function climateStories(req, res) {
   const { page } = req.query
   const pageNumber = parseInt(page, 10) || 1
   const pageSize = 10
@@ -53,3 +53,5 @@ export async function climateStories(req, res) {
     res.status(500).json({ error: 'Failed to scrape stories' })
   }
 }
+
+export default climateStories
