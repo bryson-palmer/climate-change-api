@@ -10,8 +10,5 @@
   "env": {
     "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
   },
-  "regions": ["pdx1"],
-  "engines": {
-    "node": "18.x"
-  }
+  "regions": ["pdx1"]
 }
