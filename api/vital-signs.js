@@ -1,12 +1,11 @@
 import * as cheerio from 'cheerio'
-import { chromium } from 'playwright'
+import chromium from 'playwright-aws-lambda'
 
 async function vitalSigns(req, res) {
   try {
     const urlBase = 'https://climate.nasa.gov'
-    const browser = await chromium.launch({ headless: true })
-    const context = await browser.newContext()
-    const page = await context.newPage()
+    const browser = await chromium.launchChromium({ headless: true })
+    const page = await browser.newPage()
     await page.goto('https://climate.nasa.gov/module/5/')
     const html = await page.content()
     const $ = cheerio.load(html)
