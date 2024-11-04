@@ -7,7 +7,6 @@
     }
   },
   "buildCommand": "npx playwright install chromium",
-  "installCommand": "npx playwright install-deps",
   "env": {
     "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
   },
