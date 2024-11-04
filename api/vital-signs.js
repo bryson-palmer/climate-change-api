@@ -2,8 +2,8 @@ import * as cheerio from 'cheerio'
 import { chromium } from 'playwright'
 
 async function vitalSigns(req, res) {
-  const urlBase = 'https://climate.nasa.gov'
   try {
+    const urlBase = 'https://climate.nasa.gov'
     const browser = await chromium.launch({ headless: true })
     const context = await browser.newContext()
     const page = await context.newPage()
