@@ -48,13 +48,18 @@ body {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 6rem);
   font-weight: 100;
+  line-height: 1;
 }
 
 h2 {
+  font-size: clamp(1rem, 2vw, 2rem);
   font-weight: 400;
-  color: #b9b9bb;
+  text-shadow: 1px 2px 5px #03061c;
+  text-align: center;
+  padding-top: 0.5rem;
+  max-width: 700px;
 }
 
 p {
@@ -64,7 +69,7 @@ p {
 
 a {
   color: #fa7832;
-  font-size: 1.5em;
+  font-size: clamp(0.875rem, 1.5rem, 2.5rem);
   font-weight: 800;
   text-decoration: none;
   font-family: Helvetica, sans-serif;
@@ -101,12 +106,15 @@ select {
 }
 
 header {
-  max-width: 500px;
-  font-size: 0.75em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1em, 1vw, 2em);
 }
 
 section {
   height: 100dvh;
+  width: 100%;
 }
 
 canvas {
@@ -119,27 +127,48 @@ canvas {
 svg {
   position: absolute;
   top: 1em;
-  left: 2em;
+  left: 1.5em;
 }
 
-code {
-  font-weight: 200;
+pre {
+  margin: 0;
 }
-
+pre code {
+  display: block;
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  max-width: 100%;
+  min-width: 100px;
+  color: #b9b9bb;
+}
 #content {
+  width: 100%;
   position: relative;
   z-index: 1;
-  width: 100%;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 2em;
 }
 
-#api {
-  height: 100%;
+.api {
+  aspect-ratio: 1 / 1;
+  width: 80px;
+  border: 2px solid green;
+  border-radius: 50%;
+  position: absolute;
+  top: 1.25em;
+  right: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.api > p {
+  color: green;
+  font-family: sans-serif, "Helvetica Neue", "Lucida Grande", Arial;
+  font-weight: 600;
+  font-stretch: condensed;
+  letter-spacing: 2px;
 }
 
 .overlay {
@@ -159,57 +188,36 @@ code {
 }
 
 .glass {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(10px);
   border-radius: 15px;
-  padding: 20px 30px;
+  padding: 20px 20px;
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
-  max-width: 800px;
-  text-align: center;
-  max-height: fit-content;
 }
 
 .nasa {
-  font-size: 2.5rem;
+  font-size: clamp(0.875rem, 1.5rem, 2.5rem);
 }
 
 .landing {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  gap: 20em;
+  align-items: center;
 }
 
 .container {
   text-align: left;
+  max-width: 600px;
+  height: fit-content;
+  margin: 0 auto;
 }
 
 .endpoint {
   color: #1f5cc4;
 }
 
-/* Generic left padding classes using increments of 1em */
-.pl-1 {
-  padding-left: 1em;
-}
-
-.pl-2 {
-  padding-left: 2em;
-}
-
-.pl-3 {
-  padding-left: 3em;
-}
-
-.pl-4 {
-  padding-left: 4em;
-}
-
 /* Generic padding vertical classes using 2em */
-.pt {
-  padding-top: 0.5em;
-}
-
 .pb {
   padding-bottom: 0.5em;
 }
@@ -222,8 +230,8 @@ code {
   padding-bottom: 2em;
 }
 
-.pb-3 {
-  padding-bottom: 3em;
+.mb-2 {
+  margin-bottom: 2em;
 }
 
 .text {

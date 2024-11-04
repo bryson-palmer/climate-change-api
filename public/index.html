@@ -14,7 +14,7 @@
     <section class="landing">
       <header>
         <h1>Climate Change API</h1>
-        <h2 class="pt pb-3">
+        <h2>
           Unofficial API collection of scraped climate stories and climate vital signs from
         </h2>
         <a class="nasa" target="_blank" rel="author" href="https://science.nasa.gov/climate-change">
@@ -72,62 +72,65 @@
           <path d="M65.748 44.848c-1.468.978-3.017 1.999-4.649 3.065.732.355 1.315.801 1.371 1.377.104 1.082-2.07 1.605-4.035 1.38-.393-.045-.779-.148-1.147-.286-.408.263-.82.528-1.238.796-.425.273-.941.609-1.53.997v1.553c.39-.765 1.243-1.45 1.905-1.485.285-.015 1.275.9 5.355.675 1.98-.109 5.805-2.22 5.745-4.65C67.489 46.834 66.739 45.714 65.748 44.848zM54.519 48.6v1.582c.361-.241.717-.478 1.066-.709C55.036 49.091 54.647 48.734 54.519 48.6zM64.353 43.855c-.38-.225-.765-.422-1.134-.596-1.92-.9-3.93-1.065-4.35-2.28-.296-.857.54-1.65 2.58-1.62 2.04.03 3.93 1.245 4.44 1.68v-3.87c-.15.15-.808.905-1.41.78-1.155-.24-3.12-.553-5.37-.54-2.58.015-4.8 2.009-4.875 4.53-.105 3.525 2.715 4.485 4.305 5.04.164.057.351.118.554.183 1.525-.992 2.731-1.756 3.437-2.163C63.004 44.726 63.625 44.334 64.353 43.855z"/>
         </g>
       </svg>
-      <img width="175" height="100" alt="Earth" loading="eager" decoding="async" src="https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=4096&amp;format=png" sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, (max-width: 1536px) 1280px, 2048px" srcset="https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=320&amp;format=png 320w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=640&amp;format=png 640w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=768&amp;format=png 768w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=1024&amp;format=png 1024w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=1280&amp;format=png 1280w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=1536&amp;format=png 1536w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=2048&amp;format=png 2048w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=2560&amp;format=png 2560w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=3072&amp;format=png 3072w, https://science.nasa.gov/wp-content/uploads/2023/05/earth-1-jpg.webp?w=4096&amp;format=png 4096w" style="aspect-ratio: 1 / 1; border-radius: 50%; position: absolute; top: 0.5em; right: 0;">
-      <a href="#api">Zoom to API</a>
+      <div class="api">
+        <p>{ API }</p>
+      </div>
+      <a href="#api" class="pb-2">Zoom to API</a>
     </section>
-    <section id="api" class="glass">
-      <div class="container pb-2">
+    <section id="api">
+      <div class="container glass mb-2">
         <h3 class="pb">
           endpiont:
           <span class="endpoint"> /api/climate-stories?page={page}</span>
         </h3>
         <p class="text">where the dynamic page value is the user request query</p>
         <p class="text pb-1">returns a list of climate stories with the story object shape of:</p>
-        <code>
-          <p>*{</p>
-          <p>*<span class="pl-1">data: [</span></p>
-          <p>*<span class="pl-2">{</span></p>
-          <p>*<span class="pl-3">image: {</span></p>
-          <p>*<span class="pl-4">src: string climate story image url</span></p>
-          <p>*<span class="pl-4">alt: string climate story title</span></p>
-          <p>*<span class="pl-3">},</span></p>
-          <p>*<span class="pl-3">link: string climate story url</span></p>
-          <p>*<span class="pl-3">readtime: string how long to read</span></p>
-          <p>*<span class="pl-3">synopsis: string first few lines truncated</span></p>
-          <p>*<span class="pl-3">title: string climate story title</span></p>
-          <p>*<span class="pl-3">publishdate: string how many days/months ago published</span></p>
-          <p>*<span class="pl-2">},</span></p>
-          <p>*<span class="pl-1">],</span></p>
-          <p>*<span class="pl-1">error: null | error,</span></p>
-          <p>*<span class="pl-1">nextPage: null | string url /api/climate-stories?page={nextPage},</span></p>
-          <p>*<span class="pl-1">prevPage: null | string url /api/climate-stories?page={prevPage},</span></p>
-          <p>*<span class="pl-1">page: number,</span></p>
-          <p>*<span class="pl-1">pageSize: number,</span></p>
-          <p>*<span class="pl-1">timestamp: sting Date.now()</span></p>
-          <p>*<span>}</span></p>
-        </code>
+        <pre><code>
+  {
+    data: [
+      {
+        image: {
+          src: string climate story image url,
+          alt: string climate story title
+        },
+        link: string climate story url,
+        link: string climate story url,
+        readtime: string how long to read,
+        synopsis: string first few lines truncated,
+        title: string climate story title,
+        publishdate: string how many days/months ago published,
+      },
+    ],
+    error: null | error,
+    nextPage: null | string url /api/climate-stories?page={nextPage},
+    prevPage: null | string url /api/climate-stories?page={prevPage},
+    page: number,
+    pageSize: number,
+    timestamp: sting Date.now()
+  }
+        </code></pre>
       </div>
-      <div class="container">
+      <div class="container glass">
         <h3 class="pb">
           endpiont:
           <span class="endpoint"> /api/vital-signs</span>
         </h3>
         <p class="text pb-1">returns a list of climate vital signs with the vital sign object shape of:</p>
-        <code>
-          <p>*{</p>
-          <p>*<span class="pl-1">data: [</span></p>
-          <p>*<span class="pl-2">{</span></p>
-          <p>*<span class="pl-3">link: string vital sign url,</span></p>
-          <p>*<span class="pl-3">title: string vital sign title,</span></p>
-          <p>*<span class="pl-3">units: string vital sign unit of measurement phrase,</span></p>
-          <p>*<span class="pl-3">valueChange: string vital sign value changed,</span></p>
-          <p>*<span class="pl-3">valueDirection: string vital sign value direction up | down,</span></p>
-          <p>*<span class="pl-2">},</span></p>
-          <p>*<span class="pl-1">],</span></p>
-          <p>*<span class="pl-1">error: null | error,</span></p>
-          <p>*<span class="pl-1">timestamp: sting Date.now()</span></p>
-          <p>*<span>}</span></p>
-        </code>
+        <pre><code>
+  {
+    data: [
+      {
+        link: string vital sign url,
+        title: string vital sign title,
+        units: string vital sign unit of measurement phrase,
+        valueChange: string vital sign value changed,
+        valueDirection: string vital sign value direction up | down,
+      },
+    ],
+    error: null | error,
+    timestamp: sting Date.now()
+  }
+        </code></pre>
       </div>
     </section>
   </main>
