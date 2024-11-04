@@ -3,11 +3,11 @@
   "functions": {
     "api/*.js": {
       "memory": 1024,
-      "maxDuration": 20
+      "maxDuration": 10
     }
   },
   "buildCommand": "npx playwright install chromium",
-  "installCommand": "npm install && npx playwright install-deps",
+  "installCommand": "npx playwright install-deps",
   "env": {
     "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
   },
