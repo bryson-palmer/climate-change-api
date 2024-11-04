@@ -1,40 +1,38 @@
-// import axios from 'axios'
 import * as cheerio from 'cheerio'
 import { chromium } from 'playwright'
 
-export async function vitalSigns(req, res) {
+async function vitalSigns(req, res) {
+  const urlBase = 'https://climate.nasa.gov'
   try {
-    const browser = await chromium.launch()
+    const browser = await chromium.launch({ headless: true })
     const context = await browser.newContext()
     const page = await context.newPage()
     await page.goto('https://climate.nasa.gov/module/5/')
     const html = await page.content()
-    // const { data } = await axios.get('https://climate.nasa.gov/module/5/')
-    const $ = cheerio.load(html) // took out data
+    const $ = cheerio.load(html)
 
     const vitals = []
 
     $('a.image_and_description_container').each((_, element) => {
-      const changeNumber = $(element).find('div.change_number').text().trim()
-      const direction = $(element).find('div[class*=value]').attr('class').split(' ')[1]
-      const link = $(element).attr('href')
+      const link = `${urlBase}${$(element).attr('href')}`
       const title = $(element).find('div.title').text().trim()
       const units = $(element).find('div.units').text().trim()
+      const valueChange = $(element).find('div.change_number').text().trim()
+      const valueDirection = $(element).find('div[class*=value]').attr('class').split(' ')[1]
 
-      if (changeNumber && direction && link && title && units) {
+      if (link && title && units && valueChange && valueDirection) {
         vitals.push({
-          changeNumber,
-          direction,
           link,
           title,
-          units
+          units,
+          valueChange,
+          valueDirection,
         })
       }
 
       return
     })
 
-    // Return the result wrapped in an object
     res
       .status(200)  
       .json({
@@ -48,3 +46,5 @@ export async function vitalSigns(req, res) {
     res.status(500).json({ error: 'Failed to scrape vital signs' })
   }
 }
+
+export default vitalSigns
