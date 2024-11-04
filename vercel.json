@@ -9,9 +9,6 @@
   "env": {
     "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
   },
-  "installCommand": "npx playwright install-deps",
-  "rewrites": [
-    {"source": "/(.*)", "destination": "/api"}
-  ],
+  "installCommand": "npm install && npx playwright install-deps",
   "regions": ["pdx1"]
 }
