@@ -6,9 +6,10 @@
       "maxDuration": 20
     }
   },
-  "env": {
-    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
-  },
+  "buildCommand": "npx playwright install chromium",
   "installCommand": "npm install && npx playwright install-deps",
+  "env": {
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
+  },
   "regions": ["pdx1"]
 }
