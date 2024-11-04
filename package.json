@@ -5,7 +5,8 @@
   "description": "An API of web scrapings of climate change data from various sources curated for your convenience.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "postinstall": "npx playwright install chromium"
   },
   "author": "bryson palmer",
   "license": "ISC",
