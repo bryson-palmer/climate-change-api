@@ -1,10 +1,12 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 
-async function climateStories(req, res) {
-  const { page } = req.query
-  const pageNumber = parseInt(page, 10) || 1
-  const pageSize = 10
+export default async (req, res) => {
+  /*
+    Using both req types in order to handle the page parameter both locally and in Vercel's environment.
+    Formatting the req string by parsing it into an integer and also converting to absolute value.
+  */
+  const pageNumber = Math.abs(parseInt(req.query.page ?? req.params.page, 10) || 1)
 
   try {
     const { data } = await axios.get(`https://science.nasa.gov/climate-change/stories?pageno=${pageNumber}&content_list=true`)
@@ -36,16 +38,25 @@ async function climateStories(req, res) {
       })
     })
 
-    // Return the result wrapped in an object
+    const next =
+      stories.length > 0 && stories.length === 10
+        ? `/api/climate-stories/${pageNumber + 1}`
+        : null
+
+    const previous =
+      stories.length > 0 && pageNumber > 1
+        ? `/api/climate-stories/${pageNumber - 1}`
+        : null
+
     res
       .status(200)  
       .json({
-        data: stories,
+        data: stories.length ? stories : 'End of climate stories',
         error: null,
-        nextPage: stories.length > 0 ? `/api/climate-stories?page=${pageNumber + 1}` : null,
-        prevPage: pageNumber > 1 ? `/api/climate-stories?page=${pageNumber - 1}` : null,
+        nextPage: next,
+        prevPage: previous,
         page: pageNumber,
-        pageSize: pageSize,
+        pageSize: stories.length,
         timestamp: new Date().toISOString(),
       })
   } catch (error) {
@@ -53,5 +64,3 @@ async function climateStories(req, res) {
     res.status(500).json({ error: 'Failed to scrape stories' })
   }
 }
-
-export default climateStories
