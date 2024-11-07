@@ -2,7 +2,7 @@
   "version": 2,
   "public": true,
   "functions": {
-    "api/*.js": {
+    "api/**/*.js": {
       "memory": 1024,
       "maxDuration": 60
     }
@@ -10,8 +10,5 @@
   "routes": [
     { "src": "/", "dest": "/index.html" }
   ],
-  "env": {
-    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
-  },
   "regions": ["pdx1"]
 }
