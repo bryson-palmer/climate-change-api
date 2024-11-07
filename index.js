@@ -1,20 +1,25 @@
 import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import climateStories from './api/climate-stories.js'
+import climateStories from './api/climate-stories/[page].js'
 import vitalSigns from './api/vital-signs.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+/*
+  This express server is only for local development on localhost:8000.
+  The vercel serverless functions are declared and set up in the vercel.json file.
+*/
+
 const app = express()
 
-// Serve static files if applicable
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Serve API routes for local development
-app.get('/api/climate-stories', climateStories)
-app.get('/api/vital-signs', vitalSigns)
+app.use('/api/climate-stories/:page', climateStories)
+app.use('/api/vital-signs', vitalSigns)
 
 // Serve index.html for all other routes
 app.get('*', (req, res) => {
