@@ -75,16 +75,16 @@
       <div class="api">
         <p>{ API }</p>
       </div>
-      <a href="#api" class="pb-2">Zoom to API</a>
+      <a href="#api" class="pb-2">API docs</a>
     </section>
     <section id="api">
       <div class="container glass mb-2">
         <h3 class="pb">
-          endpiont:
-          <span class="endpoint"> /api/climate-stories?page={page}</span>
+          endpoint:
+          <span class="endpoint">/api/climate-stories/:page</span>
         </h3>
-        <p class="text">where the dynamic page value is the user request query</p>
-        <p class="text pb-1">returns a list of climate stories with the story object shape of:</p>
+        <p class="text">Where the dynamic page value is the user request param</p>
+        <p class="text pb-1">Returns a list of climate stories with the story object shape of:</p>
         <pre><code>
   {
     data: [
@@ -94,7 +94,6 @@
           alt: string climate story title
         },
         link: string climate story url,
-        link: string climate story url,
         readtime: string how long to read,
         synopsis: string first few lines truncated,
         title: string climate story title,
@@ -102,8 +101,8 @@
       },
     ],
     error: null | error,
-    nextPage: null | string url /api/climate-stories?page={nextPage},
-    prevPage: null | string url /api/climate-stories?page={prevPage},
+    nextPage: null | string url /api/climate-stories/nextPage,
+    prevPage: null | string url /api/climate-stories/prevPage,
     page: number,
     pageSize: number,
     timestamp: sting Date.now()
@@ -112,10 +111,10 @@
       </div>
       <div class="container glass">
         <h3 class="pb">
-          endpiont:
-          <span class="endpoint"> /api/vital-signs</span>
+          endpoint:
+          <span class="endpoint">/api/vital-signs</span>
         </h3>
-        <p class="text pb-1">returns a list of climate vital signs with the vital sign object shape of:</p>
+        <p class="text pb-1">Returns a list of climate vital signs with the vital sign object shape of:</p>
         <pre><code>
   {
     data: [
