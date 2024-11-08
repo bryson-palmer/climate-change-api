@@ -153,7 +153,8 @@ pre code {
 .api {
   aspect-ratio: 1 / 1;
   width: 80px;
-  border: 2px solid green;
+  background-color: #0b3d91;
+  border: 2px solid #fc3d21;
   border-radius: 50%;
   position: absolute;
   top: 1.25em;
@@ -164,7 +165,7 @@ pre code {
 }
 
 .api > p {
-  color: green;
+  color: #ffffff;
   font-family: sans-serif, "Helvetica Neue", "Lucida Grande", Arial;
   font-weight: 600;
   font-stretch: condensed;
