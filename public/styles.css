@@ -326,7 +326,13 @@ pre code {
 }
 
 .endpoint {
-  color: #1f5cc4;
+  color: #0b3d91;
+  font-size: 1em;
+  filter: brightness(1.3);
+}
+
+.endpoint:hover {
+  filter: brightness(1.6)
 }
 
 /* Generic padding vertical classes using 2em */
