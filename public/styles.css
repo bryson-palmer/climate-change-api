@@ -147,7 +147,52 @@ pre code {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 2em;
+
+.card-skeleton {
+  width: 100%;
+  background: transparent;
+  display: flex;
+  align-items: flex-end;
+}
+
+.skeleton-image {
+  width: 100%;
+  background: linear-gradient(90deg, transparent 35%, rgba(250, 120, 50, 0.5) 50%, transparent 65%);
+  background-size: 200% 100%;
+  background-position: 150% 0;
+  border-bottom: thin solid rgba(255,0,0, 0);
+  animation: shimmer 2.5s 1s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 150% 0;
+    border-bottom-color: rgba(255,0,0, 0);
+  }
+  10% {
+    border-bottom-color: rgba(255,0,0, 0.5);
+  }
+  15% {
+    border-bottom-color: rgba(255,0,0, 0);
+  }
+  20% {
+    background-position: -50% 0;
+    border-bottom-color: rgba(255,0,0, 0);
+  }
+  30% {
+    border-bottom-color: rgba(255,0,0, 0.5);
+  }
+  35% {
+    border-bottom-color: rgba(255,0,0, 0);
+  }
+  40% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: 150% 0;
+    border-bottom-color: rgba(255,0,0, 0);
+  }
+}
 }
 
 .api {
@@ -172,6 +217,19 @@ pre code {
   letter-spacing: 2px;
   font-size: larger;
   padding-left: 0.2em;
+}
+.sample {
+  padding: 0 !important;
+}
+
+.ring {
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  transform: rotate3d(1, 1, 1, -193.4deg);
+  position: relative;
+  top: 2.7em;
+  scale: 1.6;
+  z-index: -1;
 }
 
 .overlay {
@@ -198,15 +256,54 @@ pre code {
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
 }
 
-.nasa {
-  font-size: clamp(0.875rem, 1.5rem, 2.5rem);
+#sample-vitals {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  padding: 0;
 }
 
-.landing {
+.cards {
+  display: flex;
+  width: 100%;
+  transform: translateX(0);
+  margin-top: 1rem;
+  animation: animateCards 45s infinite linear reverse;
+}
+
+@keyframes animateCards {
+  from { transform: translateX(0%) }
+  to {  transform: translateX(-220%) }
+}
+.card {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+  align-items: end;
+  min-width: max-content;
+  padding-right: 2rem;
+}
+
+.card:not(:first-child) {
+  padding-left: 2rem;
+}
+
+.card:last-child {
+  padding-right: 1rem;
+}
+.card:not(:last-child) {
+  border-right: thin solid silver;
+}
+
+.subtitle {
+  display: flex;
+  gap: 0.5em;
+}
+
+.arrow {
+  color: #fa7832;
+  font-weight: 800;
+  font-family: Helvetica, sans-serif;
+}
 }
 
 .container {
