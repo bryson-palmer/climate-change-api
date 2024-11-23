@@ -124,10 +124,13 @@ canvas {
   left: 0;
 }
 
-svg {
-  position: absolute;
-  top: 1em;
-  left: 1.5em;
+svg:not(.api > svg) {
+  font-size: 1rem;
+  margin-right: -0.75rem;
+}
+
+svg:hover:not(.api > svg) {
+  filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.5));
 }
 
 pre {
@@ -193,6 +196,15 @@ pre code {
     border-bottom-color: rgba(255,0,0, 0);
   }
 }
+
+.border-ring {
+  border: 2px solid #fc3d21;
+  border-radius: 50%;
+  width: 84px;
+  aspect-ratio: 1 / 1;
+  position: absolute;
+  top: 3px;
+  left: 8px;
 }
 
 .api {
