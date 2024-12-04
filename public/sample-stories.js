@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const forwardButton = document.createElement('button')
 
   async function getClimateStories(page) {
-    const url = `http://localhost:3000/api/climate-stories/${page}`
+    const url = `https://climate-data.vercel.app/api/climate-stories/${page}`
     // Cache current page number
     await saveCurrentPageToDB(page)
   
