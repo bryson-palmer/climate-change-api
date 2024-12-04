@@ -20,12 +20,16 @@ export default async (req, res) => {
         src: $(element).find('img').attr('src'),
         alt: $(element).find('a').attr('title'),
       }
-      const link = $(element).find('a').attr('href')
       const readtime = $(element).find('.hds-content-item-readtime').text().trim()
       const synopsis = $(element).find('p').text().trim()
       const title = $(element).find('a').attr('title')
-      const published = $(element).find('span').text()
 
+      let link = $(element).find('a').attr('href')
+      if (link.charAt(0) === '/') {
+        link = `https://science.nasa.gov${link}`
+      }
+
+      const published = $(element).find('span').text()
       publishdate = published.split('Article')[1]
 
       stories.push({
