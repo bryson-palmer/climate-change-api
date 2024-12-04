@@ -156,17 +156,22 @@ pre code {
   position: fixed;
   bottom: 0;
   right: 0;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(10px);
   border-radius: 5px;
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.15);
-  padding: 0.25rem 0.5rem 0.15rem;
   margin: 0 1rem 1rem 0;
-  transform: scale(1.5);
+  font-size: larger;
 }
 
 #back-to-top:hover {
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.35);
+  scale: 1.1;
 }
 
 .card-skeleton {
@@ -191,7 +196,7 @@ pre code {
     border-bottom-color: rgba(255,0,0, 0);
   }
   10% {
-    border-bottom-color: rgba(255,0,0, 0.5);
+    border-bottom-color: rgba(255,255,255, 0.25);
   }
   15% {
     border-bottom-color: rgba(255,0,0, 0);
@@ -201,7 +206,7 @@ pre code {
     border-bottom-color: rgba(255,0,0, 0);
   }
   30% {
-    border-bottom-color: rgba(255,0,0, 0.5);
+    border-bottom-color: rgba(255,255,255, 0.25);
   }
   35% {
     border-bottom-color: rgba(255,0,0, 0);
