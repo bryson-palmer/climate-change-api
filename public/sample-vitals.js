@@ -31,11 +31,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const vitalDirection = document.createElement('span')
 
       vitalTitle.textContent = title
-      vitalDirection.textContent = valueDirection === 'up' ? '⬆' : '⬇'
       vitalSign.textContent = ` ${valueChange} ${units}`
 
       subtitle.setAttribute('class', 'subtitle')
-      vitalDirection.setAttribute('class', 'arrow')
+      valueDirection === 'up'
+        ? vitalDirection.setAttribute('class', 'fa fa-long-arrow-up arrow')
+        : vitalDirection.setAttribute('class', 'fa fa-long-arrow-down arrow')
       vitalCard.setAttribute('href', link)
       vitalCard.setAttribute('rel', 'noreferrer')
       vitalCard.setAttribute('target', '_blank')
