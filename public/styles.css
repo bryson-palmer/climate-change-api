@@ -161,9 +161,6 @@ pre code {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 5px;
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.15);
   margin: 0 1rem 1rem 0;
   font-size: larger;
@@ -171,7 +168,6 @@ pre code {
 
 #back-to-top:hover {
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.35);
-  scale: 1.1;
 }
 
 .card-skeleton {
@@ -464,6 +460,9 @@ pre code {
 .button {
   width: 1.75em;
   height: 1.75em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   font-size: larger;
   color: #ffffff;

@@ -119,13 +119,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const backPage = prevPage?.slice(-1)
     const forwardPage = nextPage?.slice(-1)
 
+    backButton.setAttribute('class', 'fa fa-arrow-left button')
     backButton.setAttribute('data-page', backPage)
-    backButton.setAttribute('class', 'button')
-    backButton.textContent = '⬅'
+    // backButton.textContent = '⬅'
 
+    forwardButton.setAttribute('class', 'fa fa-arrow-right button')
     forwardButton.setAttribute('data-page', forwardPage)
-    forwardButton.setAttribute('class', 'button')
-    forwardButton.textContent = '⮕'
+    // forwardButton.textContent = '⮕'
 
     storyButtons.setAttribute('class', 'story-buttons')
     pagination.setAttribute('class', 'pagination glass')
