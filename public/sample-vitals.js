@@ -4,9 +4,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const vitalsList = document.createElement('ul')
   const cardSkeleton = document.querySelector('.card-skeleton')
   const skeletonImage = document.querySelector('.skeleton-image')
-  const url = 'https://climate-data.vercel.app/api/vital-signs'
   
   try {
+    const isProduction = window.origin.startsWith('https://climate-data.vercel.app')
+    const baseUrl = isProduction ? 'https://climate-data.vercel.app' : 'http://localhost:3000'
+    const url = `${baseUrl}/api/vital-signs`
+    
     cardSkeleton.setAttribute('style', 'height: 100px')
     skeletonImage.setAttribute('style', 'height: 3px')
 
