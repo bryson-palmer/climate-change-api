@@ -173,40 +173,40 @@ pre code {
 
 .skeleton-image {
   width: 100%;
-  background: linear-gradient(90deg, transparent 35%, rgba(250, 120, 50, 0.5) 50%, transparent 65%);
+  background: linear-gradient(90deg, transparent 35%, rgba(250, 120, 50, 0.75) 50%, transparent 65%);
   background-size: 200% 100%;
   background-position: 150% 0;
-  border-bottom: thin solid rgba(255,0,0, 0);
+  border-bottom: thin solid rgba(11,60,145, 0);
   animation: shimmer 2.5s 1s linear infinite;
 }
 
 @keyframes shimmer {
   0% {
     background-position: 150% 0;
-    border-bottom-color: rgba(255,0,0, 0);
+    border-bottom-color: rgba(11,60,145, .10);
   }
   10% {
-    border-bottom-color: rgba(255,255,255, 0.25);
+    border-bottom-color: rgba(252, 61, 33, 0.25);
   }
   15% {
-    border-bottom-color: rgba(255,0,0, 0);
+    border-bottom-color: rgba(11,60,145, .10);
   }
   20% {
     background-position: -50% 0;
-    border-bottom-color: rgba(255,0,0, 0);
+    border-bottom-color: rgba(11,60,145, .10);
   }
   30% {
-    border-bottom-color: rgba(255,255,255, 0.25);
+    border-bottom-color: rgba(252, 61, 33, 0.25);
   }
   35% {
-    border-bottom-color: rgba(255,0,0, 0);
+    border-bottom-color: rgba(11,60,145, .10);
   }
   40% {
     background-position: 150% 0;
   }
   100% {
     background-position: 150% 0;
-    border-bottom-color: rgba(255,0,0, 0);
+    border-bottom-color: rgba(11,60,145, 0);
   }
 }
 
