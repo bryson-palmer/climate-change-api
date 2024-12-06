@@ -34,9 +34,9 @@ const getCurrentPageFromDB = async () => {
   try {
     const currentPage = await db.currentPage.orderBy('value').last()
     const timeLapsed = Date.now() - currentPage?.ts
-    const oneDay = 24 * 60 * 60 * 1000
+    const oneDay = 12 * 60 * 60 * 1000
 
-    // Cache is stale after one day
+    // Cache is stale after 12 hours
     if (timeLapsed > oneDay) {
       db.currentPage.clear()
       db.pages.clear()
